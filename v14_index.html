@@ -189,6 +189,81 @@
             0% { opacity: 0; transform: translateY(-15px) scale(0.95); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
+        
+/* Corecție ferestre Radio și Setări pe ecrane mici */
+#radioModal,
+#settingsModal {
+    box-sizing: border-box;
+    padding: 8px;
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+#radioModal > div,
+#settingsModal > div {
+    box-sizing: border-box;
+    max-height: calc(100vh - 16px);
+    max-height: calc(100dvh - 16px);
+    min-height: 0;
+}
+
+#radioModal > div {
+    padding: 52px 14px 12px;
+    overflow: hidden;
+}
+
+#radioModal > div > button:first-child,
+#settingsModal > div > button:first-child {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 30;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    color: white;
+    font-size: 22px;
+    touch-action: manipulation;
+}
+
+#radioListContainer {
+    min-height: 0 !important;
+    overscroll-behavior: contain;
+}
+
+#sectionRadio,
+#sectionYoutube,
+#sectionLocal {
+    min-height: 0;
+}
+
+#sectionYoutube {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+#settingsModal > div {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-top: 52px;
+}
+
+@media (max-height: 600px) {
+    #radioModal > div {
+        padding-top: 48px;
+    }
+
+    #radioModal > div > div:first-of-type {
+        display: none;
+    }
+                      }
+        
     </style>
 </head>
 <body class="text-white flex flex-col justify-between h-screen p-2 sm:p-4 select-none">
