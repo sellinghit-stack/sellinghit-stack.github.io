@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Solitaire Delight</title>
-    <meta name="app-version" content="v16.1-2026-11-04">
+    <meta name="app-version" content="v17.1-2026-11-04">
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#1e3c72">
     <meta name="mobile-web-app-capable" content="yes">
@@ -284,6 +284,35 @@
 .mr-step-dot{width:8px;height:8px;border-radius:50%;background:#ffffff45}.mr-step-dot.active{background:#fbbf24;width:22px;border-radius:8px}
 @media(prefers-reduced-motion:reduce){.mr-mascot,.mr-mascot .mr-arm,#mrCoach{animation:none!important}}
 
+
+        /* Compact layout: preserve a clean, predictable area for the ad slot. */
+        header.glass-panel{padding:6px 8px!important;gap:6px}
+        header .flex.items-center.space-x-2{gap:5px!important}
+        header .flex.items-center.space-x-2>button{width:34px!important;height:34px!important;padding:6px!important}
+        header .flex.space-x-2{gap:5px!important}
+        #dailyBar{margin-top:2px!important}
+        #tableauContainer{gap:2px!important;margin-top:7px!important;padding-left:2px!important;padding-right:2px!important}
+        #contentPanel{margin-bottom:4px!important}
+        #newsCard{padding:5px 8px!important;gap:7px!important}
+        #newsImg{width:34px!important;height:34px!important}
+        #newsCard .text-sm{font-size:11px!important;line-height:1.2!important}
+        #newsCard .text-xs{font-size:9px!important;line-height:1.2!important}
+        #newsCard .mb-1,#newsCard .mt-1{margin-top:2px!important;margin-bottom:2px!important}
+        #quotePanel{min-height:0!important;padding:5px 8px!important}
+        #quoteText{font-size:11px!important;line-height:1.25!important}
+        #quoteAuthor{font-size:9px!important;margin-top:2px!important}
+        footer.glass-panel{padding:5px!important;gap:5px}
+        footer.glass-panel button{padding:5px 7px!important;font-size:10px!important}
+        #mrCoach{z-index:85}
+        #mrCoach .mr-mascot{width:48px!important;height:48px!important}
+        .mr-arrow-layer{position:fixed;inset:0;width:100vw;height:100vh;z-index:82;pointer-events:none;overflow:visible}
+        .mr-arrow-line{stroke:#ffcf43;stroke-width:5;stroke-linecap:round;stroke-dasharray:12 8;filter:drop-shadow(0 2px 3px #000);animation:mrArrowFlow .65s linear infinite}
+        @keyframes mrArrowFlow{to{stroke-dashoffset:-20}}
+        .mr-coach-target{outline:3px solid #ffcf43!important;outline-offset:3px;box-shadow:0 0 18px #ffcf43!important}
+        #topShareBtn.share-nudge{animation:shareNudge .8s ease-in-out 3;box-shadow:0 0 0 3px #facc15,0 0 18px #facc15!important}
+        @keyframes shareNudge{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+        @media(max-width:380px){header .flex.items-center.space-x-2>button{width:30px!important;height:30px!important}header .flex.space-x-2>div{padding:3px 5px!important}#tableauContainer{gap:1px!important}}
+
 </style>
 </head>
 <body class="text-white flex flex-col justify-between h-screen p-2 sm:p-4 select-none">
@@ -303,7 +332,7 @@
                 <span id="radioIndicator" class="hidden absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-ping"></span>
             </button>
             <div id="mediaNudge" role="status" class="hidden absolute left-8 top-12 z-50 w-[min(270px,78vw)] rounded-xl border border-pink-300/50 bg-gray-950/95 px-3 py-2 text-xs font-semibold leading-snug text-white shadow-xl"></div>
-            <button onclick="openShare(false)" class="bg-emerald-600 hover:bg-emerald-500 p-2 rounded-xl transition text-white text-sm sm:text-base flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10" title="Distribuie">
+            <button id="topShareBtn" onclick="openShare(shareScoreAvailable)" class="bg-emerald-600 hover:bg-emerald-500 p-2 rounded-xl transition text-white text-sm sm:text-base flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10" title="Distribuie">
                 <i class="fa-solid fa-share-nodes"></i>
             </button>
         </div>
@@ -566,7 +595,6 @@
             <button onclick="toggleMenu('winModal'); startNewGame();" class="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold py-3 rounded-xl transition shadow-lg text-base">
                 <i class="fa-solid fa-rotate-right mr-2"></i><span id="btnPlayAgain">Joacă Din Nou</span>
             </button>
-            <button onclick="openShare(true)" class="w-full mt-2 bg-white/10 hover:bg-white/20 text-white font-bold py-2.5 rounded-xl text-sm"><i class="fa-solid fa-share-nodes mr-1"></i> <span id="btnShareScore">Share my score</span></button>
             <button id="donateBtn" onclick="openDonate()" class="hidden w-full mt-2 bg-amber-400 hover:bg-amber-300 text-gray-900 font-extrabold py-2.5 rounded-xl text-sm">☕</button>
             <p id="donateSub" class="hidden text-[11px] text-gray-400 mt-1 text-center"></p>
         </div>
@@ -901,7 +929,8 @@
         let highScore = parseInt(localStorage.getItem('solitaire_record') || '0');
         let moveHistory = [], dragData = null, tapCooldown = false;
         let gameStarted = false, inactivityTimer = null;
-        const INACTIVITY_LIMIT_MS = 30000;
+        let mrArrowTimer = null, shareNudgeTimer = null, shareScoreAvailable = false;
+        const INACTIVITY_LIMIT_MS = 20000;
 
         /* SINTETIZATOR DE SUNET (SFX & LO-FI SYNTH) */
         let audioCtx = null;
@@ -973,13 +1002,11 @@
 
         function resetInactivityTimer() {
             clearTimeout(inactivityTimer);
-            // Nu oferim indicii cât timp utilizatorul navighează prin Radio/Setări/Limbi.
-            if (isNavigationModalOpen()) return;
+            if (typeof mrClearMoveGuide === 'function') mrClearMoveGuide();
+            // Ghidul nu întrerupe utilizatorul cât timp navighează prin ferestre.
+            if (isNavigationModalOpen() || !gameStarted) return;
             inactivityTimer = setTimeout(() => {
-                if (gameStarted && !isNavigationModalOpen()) {
-                    giveHint();
-                    showToast("💡 30s: " + L('btnHint'));
-                }
+                if (!isNavigationModalOpen()) mrShowSuggestedMove();
             }, INACTIVITY_LIMIT_MS);
         }
 
@@ -1807,6 +1834,10 @@ function openLang() {
 
 /* LOGICĂ SOLITAIRE */
         function startNewGame(daily) {
+            if (typeof mrClearMoveGuide === 'function') mrClearMoveGuide();
+            shareScoreAvailable = false;
+            const topShare = document.getElementById('topShareBtn'); if (topShare) { topShare.classList.remove('share-nudge'); topShare.title = 'Share Solitaire Delight'; }
+
             _startNewGameCore(daily);
             initialState = JSON.stringify({ stock, waste, foundations, tableau });
         }
@@ -2088,6 +2119,11 @@ function openLang() {
 
         function gameWon() {
             clearInterval(timerInterval);
+            clearTimeout(inactivityTimer);
+            if (typeof mrClearMoveGuide === 'function') mrClearMoveGuide();
+            shareScoreAvailable = true;
+            const shareBtn = document.getElementById('topShareBtn');
+            if (shareBtn) { shareBtn.classList.add('share-nudge'); shareBtn.title = L('btnShareScore'); }
             showPop('Wonderful game!', '☕');
             onWinProgress();
             confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
@@ -2162,6 +2198,46 @@ function openLang() {
             }
         }
 
+        function mrClearMoveGuide() {
+            clearTimeout(mrArrowTimer);
+            document.querySelectorAll('.mr-coach-target').forEach(el => el.classList.remove('mr-coach-target'));
+            const layer = document.getElementById('mrArrowLayer'); if (layer) layer.remove();
+            const coach = document.getElementById('mrCoach'); if (coach) coach.classList.add('hidden');
+        }
+        function mrDrawMoveArrow(source, target) {
+            if (!source || !target) return;
+            const a = source.getBoundingClientRect(), b = target.getBoundingClientRect();
+            if (!a.width || !a.height || !b.width || !b.height) return;
+            const x1 = a.left + a.width/2, y1 = a.top + a.height/2;
+            const x2 = b.left + b.width/2, y2 = b.top + b.height/2;
+            const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+            svg.id='mrArrowLayer'; svg.setAttribute('class','mr-arrow-layer'); svg.setAttribute('viewBox',`0 0 ${window.innerWidth} ${window.innerHeight}`); svg.setAttribute('preserveAspectRatio','none');
+            svg.innerHTML=`<defs><marker id="mrArrowHead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffcf43"/></marker></defs><line class="mr-arrow-line" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" marker-end="url(#mrArrowHead)"/>`;
+            document.body.appendChild(svg);
+        }
+        function mrShowSuggestedMove() {
+            if (isNavigationModalOpen() || document.getElementById('mrOnboarding').classList.contains('flex')) return;
+            mrClearMoveGuide();
+            const move = findBestMove();
+            const textEl = document.getElementById('mrCoachText');
+            if (!move) {
+                const stockAvailable = stock.length > 0 || waste.length > 0;
+                const msg = stockAvailable ? (currentLang==='ro' ? 'Nu văd acum o mutare directă. Apasă pe pachet pentru a trage o carte.' : (mrT().coachStock || 'Tap the deck to draw a card.')) : (currentLang==='ro' ? 'Nu mai există mutări disponibile. Încearcă Undo sau începe un joc nou.' : (mrT().coachNoMoves || 'No moves available. Try Undo or start a new game.'));
+                if (textEl) textEl.textContent = msg;
+                document.getElementById('mrCoach').classList.remove('hidden');
+                const stockEl=document.getElementById('stockSlot'); if(stockAvailable && stockEl){stockEl.classList.add('mr-coach-target');mrDrawMoveArrow(document.getElementById('mrBuddy')||stockEl,stockEl);}
+            } else {
+                const msg = (currentLang==='ro' ? 'Hai să facem această mutare: ' : 'Try this move: ') + move.description;
+                if (textEl) textEl.textContent = msg;
+                document.getElementById('mrCoach').classList.remove('hidden');
+                const sources = move.sourceElems || (move.sourceElem ? [move.sourceElem] : []);
+                sources.forEach(el => el && el.classList.add('mr-coach-target'));
+                if (move.targetElem) move.targetElem.classList.add('mr-coach-target');
+                mrDrawMoveArrow(move.sourceElem || sources[0], move.targetElem);
+            }
+            mrArrowTimer=setTimeout(mrClearMoveGuide,9000);
+        }
+
         /* GĂSEȘTE CEA MAI BUNĂ MUTARE ȘI RETURNEAZĂ INSTRUCȚIUNE DETALIATĂ */
         function findBestMove() {
             const cs = (c) => c.value + SUIT_SYMBOLS[c.suit];
@@ -2176,7 +2252,8 @@ function openLang() {
                             const cardElem = colElem ? colElem.lastElementChild : null;
                             return {
                                 description: L('hColF',{c:cs(card),a:t + 1}),
-                                sourceElem: cardElem
+                                sourceElem: cardElem,
+                                targetElem: document.getElementById(`foundation-${f}`)
                             };
                         }
                     }
@@ -2191,7 +2268,8 @@ function openLang() {
                         const wasteElem = document.getElementById('wasteSlot').firstElementChild;
                         return {
                             description: L('hStockF',{c:cs(card)}),
-                            sourceElem: wasteElem
+                            sourceElem: wasteElem,
+                            targetElem: document.getElementById(`foundation-${f}`)
                         };
                     }
                 }
@@ -2208,8 +2286,7 @@ function openLang() {
                     const card = col[cardIdx];
                     const reveals = cardIdx > 0 && !col[cardIdx - 1].faceUp;
                     const empties = cardIdx === 0;
-                    if (!reveals && !empties) continue;
-                    if (card.value === 'K' && empties) continue;
+                    // Include every legal descending/alternating move; reveal/empty moves simply rank higher.
                     for (let toCol = 0; toCol < 7; toCol++) {
                         if (toCol === fromCol) continue;
                         const tgt = tableau[toCol];
@@ -2224,7 +2301,8 @@ function openLang() {
                             description: topT ? L('hColOnCard', { c: label, a: fromCol + 1, d: cs(topT), b: toCol + 1 }) : L('hKingCol', { c: label, a: fromCol + 1, b: toCol + 1 }),
                             sourceElem: colElem ? colElem.children[cardIdx] : null,
                             sourceElems: colElem ? Array.from(colElem.children).slice(cardIdx) : [],
-                            score: (reveals ? 2 : 0) + (empties ? 1 : 0)
+                            targetElem: tgt.length ? document.getElementById(`column-${toCol}`).lastElementChild : document.getElementById(`column-${toCol}`),
+                            score: (reveals ? 3 : 0) + (empties ? 2 : 0) + (topT ? 0.1 : 0)
                         };
                         if (!best || cand.score > best.score) best = cand;
                     }
@@ -2242,7 +2320,8 @@ function openLang() {
                             const wasteElem = document.getElementById('wasteSlot').firstElementChild;
                             return {
                                 description: L('hKingStock',{c:cs(card),b:toCol + 1}),
-                                sourceElem: wasteElem
+                                sourceElem: wasteElem,
+                                targetElem: document.getElementById(`column-${toCol}`)
                             };
                         }
                     } else {
@@ -2251,7 +2330,8 @@ function openLang() {
                             const wasteElem = document.getElementById('wasteSlot').firstElementChild;
                             return {
                                 description: L('hStockOnCard',{c:cs(card),d:cs(topTargetCard),b:toCol + 1}),
-                                sourceElem: wasteElem
+                                sourceElem: wasteElem,
+                                targetElem: document.getElementById(`column-${toCol}`).lastElementChild
                             };
                         }
                     }
@@ -2489,10 +2569,11 @@ function mrSkip(){mrClose()}
 function mrPrev(){if(mrStep>0){mrStep--;mrRender()}}
 function mrNextStep(){if(mrStep<5){mrStep++;mrRender();document.getElementById('mrMascot').classList.add('celebrate')}else mrClose()}
 function mrOpenFeature(id,tab){mrClose();if(id==='radioModal'){openRadio();if(tab)setTimeout(()=>switchMediaTab(tab),250)}else{toggleMenu(id)}}
-function mrDismissCoach(){document.getElementById('mrCoach').classList.add('hidden')}
+function mrDismissCoach(){if(typeof mrClearMoveGuide==='function')mrClearMoveGuide();document.getElementById('mrCoach').classList.add('hidden')}
 function mrCoach(message){if(isNavigationModalOpen())return;document.getElementById('mrCoachText').textContent=message;document.getElementById('mrCoach').classList.remove('hidden');clearTimeout(mrCoachTimer);mrCoachTimer=setTimeout(mrDismissCoach,6500)}
-function mrScheduleCoach(){clearTimeout(mrCoachTimer);if(isNavigationModalOpen())return;const t=mrT();setTimeout(()=>{if(isNavigationModalOpen()||document.getElementById('mrOnboarding').classList.contains('flex'))return;const msg=mrT().coachMove;mrCoach(msg)},20000)}
+function mrScheduleCoach(){clearTimeout(mrCoachTimer);if(isNavigationModalOpen())return;mrCoachTimer=setTimeout(()=>{if(!isNavigationModalOpen()&&!document.getElementById('mrOnboarding').classList.contains('flex'))mrShowSuggestedMove()},20000)}
 function mrReact(kind){['mrMascot','mrCoachMascot','mrBuddy'].forEach(id=>{const m=document.getElementById(id);if(m){m.classList.remove('celebrate');void m.offsetWidth;m.classList.add('celebrate')}});const t=mrT();const map={stock:t.coachStock,ace:t.coachAce,undo:t.coachUndo,nomoves:t.coachNoMoves,move:t.coachMove};if(map[kind]&&!mrCoachShown[kind]){mrCoachShown[kind]=true;mrCoach(map[kind])}}
+function mrStartShareNudge(){clearInterval(shareNudgeTimer);shareNudgeTimer=setInterval(()=>{if(isNavigationModalOpen()||document.getElementById('mrOnboarding').classList.contains('flex'))return;const b=document.getElementById('topShareBtn');if(b){b.classList.remove('share-nudge');void b.offsetWidth;b.classList.add('share-nudge');setTimeout(()=>b.classList.remove('share-nudge'),2600);}},60000)}
 function reloadNewsForPreferences(){newsItems=[];newsIdx=0;loadNews().then(showNews)}
 
         window.onload = () => {
@@ -2510,6 +2591,9 @@ function reloadNewsForPreferences(){newsItems=[];newsIdx=0;loadNews().then(showN
             radioInit = true;
             initRadioCountries();
             startNewGame();
+            document.addEventListener('pointerdown', () => { if (gameStarted && !isNavigationModalOpen()) resetInactivityTimer(); }, {passive:true});
+            document.addEventListener('keydown', () => { if (gameStarted && !isNavigationModalOpen()) resetInactivityTimer(); });
+            mrStartShareNudge();
             mrFillPrefs();
             if (!store('mr_onboarding_done')) setTimeout(() => mrStart(false), 900);
             else { const b=document.getElementById('mrBuddy'); if(b)b.classList.remove('hidden'); mrScheduleCoach(); }
