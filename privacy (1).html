@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>Solitaire Delight — Confidențialitate și condiții de utilizare</title>
+<style>
+:root{color-scheme:dark;--bg:#101b19;--panel:#182824;--line:#365147;--text:#f3f2e9;--muted:#c5d0c8;--gold:#f4c76b;--link:#f7d78e}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(150deg,#0d211b,#18212b);color:var(--text);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{width:min(900px,calc(100% - 28px));margin:28px auto 60px}.hero,.panel{background:rgba(24,40,36,.94);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,4vw,30px);margin-bottom:16px;box-shadow:0 12px 34px #0003}
+h1,h2,h3{line-height:1.25}h1{font-size:clamp(25px,5vw,36px);color:var(--gold);margin:0 0 8px}h2{font-size:21px;color:var(--gold);margin:0 0 12px}h3{font-size:17px;margin:18px 0 6px}p,li{color:var(--muted)}a{color:var(--link);overflow-wrap:anywhere}.small{font-size:13px;color:#aebdb4}.notice{border-left:4px solid var(--gold);padding:10px 14px;background:#ffffff0a;border-radius:8px}.missing{color:#ffd27a;font-weight:700;background:#392a12;padding:2px 5px;border-radius:5px}.lang{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.lang a{padding:7px 12px;border:1px solid var(--line);border-radius:9px;text-decoration:none}section{scroll-margin-top:18px}ul{padding-left:22px}hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+</style>
+</head>
+<body>
+<main>
+<div class="hero">
+  <p class="small">SOLITAIRE DELIGHT · Versiunea documentului 1.0 · 5 noiembrie 2026</p>
+  <h1>Confidențialitate și condiții de utilizare</h1>
+  <p>Acest document explică modul în care funcționează Solitaire Delight, ce informații rămân pe dispozitiv și ce se poate întâmpla atunci când utilizatorul activează servicii furnizate de terți. Include și condițiile de utilizare a jocului.</p>
+  <div class="notice"><strong>Pe scurt:</strong> jocul nu folosește un server propriu dedicat pentru înregistrarea mutărilor, scorului sau timpului de joc. Unele preferințe și statistici sunt păstrate local în browser/dispozitiv. Funcțiile online contactează furnizori externi, care își aplică propriile politici.</div>
+  <div class="lang"><a href="#ro">Română</a><a href="#en">English summary</a></div>
+  <p class="small">Operatorul/controlorul proiectului: <span class="missing">[DE COMPLETAT: numele persoanei sau entității care operează aplicația]</span><br>Contact pentru solicitări privind datele: <span class="missing">[DE COMPLETAT: adresă publică de e-mail]</span></p>
+</div>
+
+<section id="ro" class="panel">
+<h2>PARTEA I — Politica de confidențialitate</h2>
+<h3>1. Cine operează aplicația</h3>
+<p>Solitaire Delight este un joc HTML care poate fi accesat prin browser și, în funcție de modul de instalare, poate fi utilizat ca aplicație web progresivă (PWA) sau într-un container mobil. Operatorul și datele sale de contact trebuie completate în câmpurile indicate mai sus înainte de publicarea finală. Nu publica documentul cu aceste câmpuri necompletate. Acest document nu atribuie operatorului o identitate juridică presupusă.</p>
+
+<h3>2. Fără cont și fără server propriu de înregistrare a jocului</h3>
+<ul>
+<li>Jocul nu solicită crearea unui cont și nu are, în această versiune, un server propriu dedicat pentru înregistrarea activității de joc.</li>
+<li>Mutările, scorul și timpul partidei nu sunt trimise de logica jocului către un server administrat de operator pentru a construi un istoric centralizat al jucătorilor.</li>
+<li>Unele date necesare funcționării și personalizării sunt păstrate local în browser/dispozitiv prin stocarea locală (localStorage): limba, tema, nivelul selectat, porecla opțională, numărul de victorii, seria zilnică, recordurile locale, preferințele de știri și anumite preferințe ale interfeței.</li>
+<li>Aceste informații locale nu sunt sincronizate cu un server al operatorului. Ele pot fi șterse prin ștergerea datelor site-ului din setările browserului; ștergerea poate elimina și progresul local.</li>
+<li>Jocul poate fi utilizat offline, însă știrile, radioul online, YouTube și alte resurse externe necesită conexiune la internet.</li>
+</ul>
+
+<h3>3. Servicii terțe și solicitări online</h3>
+<p>Când o funcție online este folosită, browserul comunică direct sau printr-un intermediar tehnic cu furnizorul relevant. Furnizorii pot primi automat date tehnice precum adresa IP, data și ora solicitării, tipul browserului/dispozitivului, informații despre conexiune, pagina sau resursa solicitată și identificatori/cookie-uri proprii, în funcție de serviciu și de setările utilizatorului. Operatorul jocului nu controlează politicile și perioadele de păstrare ale acestor furnizori.</p>
+<ul>
+<li><strong>Știri:</strong> jocul solicită fluxuri RSS Google News și poate folosi fluxuri BBC News și Yahoo Finance ca surse alternative. În implementarea curentă, fluxurile sunt preluate prin serviciul intermediar rss2json.com. Aceste servicii pot primi adresa IP și detaliile tehnice ale solicitării; furnizorul intermediar poate vedea și adresa fluxului solicitat.</li>
+<li><strong>Radio:</strong> căutarea/listarea posturilor poate comunica cu Radio Browser API. La redare, dispozitivul se conectează la serverul postului de radio ales; acel furnizor poate procesa datele tehnice obișnuite ale conexiunii.</li>
+<li><strong>YouTube:</strong> când utilizatorul alege redarea unui videoclip, conținutul este încărcat prin playerul/serviciile YouTube. Google/YouTube poate primi adresa IP, informații despre browser/dispozitiv, adresa paginii și date asociate redării, conform propriilor setări și politici.</li>
+<li><strong>Resurse tehnice:</strong> interfața poate încărca biblioteci și fonturi prin CDN-uri externe, inclusiv cdn.tailwindcss.com, cdnjs.cloudflare.com și cdn.jsdelivr.net, precum și Google Fonts. Solicitările către aceste domenii pot transmite date tehnice de conexiune.</li>
+</ul>
+<p>Politicile furnizorilor: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>, <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses information from sites or apps</a>, <a href="https://www.bbc.co.uk/usingthebbc/privacy/" target="_blank" rel="noopener">BBC Privacy</a>, <a href="https://www.yahoo.com/privacy/" target="_blank" rel="noopener">Yahoo Privacy</a>, <a href="https://rss2json.com/" target="_blank" rel="noopener">rss2json</a>, <a href="https://www.radio-browser.info/" target="_blank" rel="noopener">Radio Browser</a> și <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">YouTube privacy</a>.</p>
+
+<h3>4. Publicitate — AdSense și AdMob</h3>
+<ul>
+<li><strong>Versiunea web:</strong> dacă și când AdSense este configurat și activat, Google poate folosi cookie-uri, identificatori și date tehnice pentru livrarea, limitarea frecvenței, măsurarea și, în funcție de consimțământ și setări, personalizarea reclamelor.</li>
+<li><strong>Versiunea mobilă nativă:</strong> AdMob se aplică numai dacă o versiune nativă Android/iOS integrează efectiv Google Mobile Ads SDK. Simplul fapt că jocul este deschis într-un browser mobil sau instalat ca PWA nu înseamnă că AdMob este integrat; în acel caz se aplică tehnologia web folosită efectiv.</li>
+<li><strong>Starea acestei versiuni:</strong> în fișierul HTML V18, identificatorii AdSense (publisher/slot) sunt necompletați, iar încărcarea reclamelor nu este activată. Nu este integrat un SDK AdMob nativ. Prin urmare, această versiune nu trebuie prezentată ca având reclame AdSense sau AdMob active.</li>
+<li>Înainte de activarea publicității pentru utilizatori din SEE/Regatul Unit/Elveția, operatorul trebuie să configureze o platformă de gestionare a consimțământului (CMP) certificată de Google, să configureze corect opțiunile pentru reclame personalizate/nepersonalizate și să actualizeze această politică. Un simplu buton informativ nu înlocuiește CMP-ul necesar.</li>
+</ul>
+<p>Informații oficiale: <a href="https://support.google.com/adsense/answer/7549925" target="_blank" rel="noopener">How AdSense uses cookies</a>, <a href="https://support.google.com/admob/answer/10502938" target="_blank" rel="noopener">Google Publisher Policies — AdMob</a> și <a href="https://developers.google.com/admob/android/privacy/play-data-disclosure" target="_blank" rel="noopener">Google Mobile Ads SDK data disclosure</a>.</p>
+
+<h3>5. Știri și drepturile editorilor</h3>
+<p>Solitaire Delight nu pretinde că deține articolele, fotografiile sau mărcile editorilor. Zona de știri este concepută ca o previzualizare scurtă cu trimitere către sursa externă; articolul complet trebuie citit pe site-ul editorului. Disponibilitatea și permisiunea de utilizare a fluxurilor, titlurilor, fragmentelor și imaginilor depind de condițiile furnizorilor și de drepturile editorilor. Termenii Google News publicați de Google (pagina disponibilă în prezent este datată 17 ianuarie 2006) descriu serviciul ca destinat utilizării personale, necomerciale și restricționează copierea, reformatarea și afișarea publică a conținutului. Prin urmare, folosirea fluxului Google News într-un joc care ar putea afișa reclame sau solicita contribuții trebuie verificată înainte de monetizare; această politică nu reprezintă o licență pentru conținutul Google News sau al editorilor. Dacă utilizarea comercială nu este permisă, fluxul trebuie înlocuit cu surse care acordă permisiunea necesară. <a href="https://www.google.com/intl/en_us/terms_google_news.html" target="_blank" rel="noopener">Google News Terms of Use</a>.</p>
+
+<h3>6. PayPal și contribuții voluntare</h3>
+<p>În această versiune, adresa PayPal.Me nu este configurată, iar contribuțiile sunt dezactivate. Dacă operatorul activează ulterior un link PayPal, acesta va deschide un serviciu extern. Datele de plată, contul, verificările antifraudă și confirmarea tranzacției sunt gestionate de PayPal și/sau instituțiile de plată implicate, nu de logica jocului. Aplicația nu primește și nu stochează numărul cardului, datele de autentificare PayPal sau alte credențiale de plată. PayPal aplică propria declarație de confidențialitate: <a href="https://www.paypal.com/ro/legalhub/paypal/privacy-full" target="_blank" rel="noopener">PayPal Privacy Statement</a>. O contribuție este voluntară și nu cumpără puncte, avantaje în joc sau un abonament.</p>
+
+<h3>7. Fișiere audio și linkuri introduse de utilizator</h3>
+<p>Fișierele audio selectate din dispozitiv pentru redare locală sunt folosite de playerul din browser și nu sunt încărcate pe un server al operatorului de către funcția MP3. Dacă utilizatorul introduce sau deschide un link către un serviciu terț, acel serviciu primește solicitarea și poate prelucra date conform propriei politici. Utilizatorul trebuie să folosească numai linkuri și fișiere pentru care are drept de acces.</p>
+
+<h3>8. Temeiuri, drepturi și ștergere</h3>
+<p>Stocarea locală necesară funcționării și memorării preferințelor este folosită pentru furnizarea funcțiilor solicitate de utilizator. Comunicarea cu servicii externe are loc atunci când utilizatorul folosește funcția online sau când resursele externe necesare sunt solicitate de pagină. Pentru operațiunile furnizorilor terți, utilizatorul trebuie să consulte politicile acestora. În măsura în care GDPR se aplică și operatorul prelucrează date personale, utilizatorul poate exercita drepturile prevăzute de lege, inclusiv acces, rectificare, ștergere, restricționare, opoziție și portabilitate, după caz, prin datele de contact ale operatorului indicate în partea de sus.</p>
+<p>Utilizatorul poate șterge datele păstrate local prin setările browserului (ștergerea datelor site-ului/stocării locale). Aceasta poate reseta limba, tema, porecla, statisticile și progresul local. Ștergerea datelor din browser nu șterge datele păstrate independent de furnizori terți.</p>
+
+<h3>9. Securitate, copii și modificări</h3>
+<p>Operatorul nu poate garanta că browserul, dispozitivul, conexiunea sau serviciile terțe sunt lipsite de vulnerabilități ori întreruperi. Utilizatorul este responsabil să își protejeze dispozitivul și să păstreze copii ale informațiilor pe care dorește să le conserve. Politica poate fi actualizată când funcțiile sau furnizorii se schimbă; versiunea și data actualizării vor fi afișate în acest document.</p>
+</section>
+
+<section class="panel">
+<h2>PARTEA II — Condiții de utilizare</h2>
+<h3>10. Acceptarea și licența de utilizare</h3>
+<p>Prin utilizarea jocului, utilizatorul acceptă aceste condiții. Operatorul acordă o licență limitată, neexclusivă, revocabilă și netransferabilă pentru utilizarea personală și legală a jocului. Nu se transferă drepturi de proprietate intelectuală asupra jocului, codului, elementelor grafice, personajului Mr. Delight, denumirii sau interfeței.</p>
+
+<h3>11. Utilizare permisă</h3>
+<ul>
+<li>Jocul este destinat divertismentului. Scorurile, nivelurile și recompensele vizuale nu au valoare monetară.</li>
+<li>Jocul nu este un serviciu de pariuri, jocuri de noroc sau premii în bani.</li>
+<li>Utilizatorul nu trebuie să folosească aplicația pentru activități ilegale, pentru distribuirea de malware sau pentru a afecta funcționarea serviciilor terțe.</li>
+<li>Redistribuirea, republicarea, vânzarea, reambalarea sau modificarea jocului în scop de distribuție fără acordul scris al titularului nu este permisă, în măsura în care legea permite această restricție.</li>
+</ul>
+
+<h3>12. Servicii și conținut terț</h3>
+<p>Radio, YouTube, știrile, CDN-urile, publicitatea viitoare și PayPal sunt servicii independente. Operatorul nu controlează disponibilitatea, conținutul, politicile, condițiile sau practicile acestora și nu garantează funcționarea lor continuă. Linkurile externe sunt oferite pentru comoditate; accesarea lor se face pe răspunderea utilizatorului și sub condițiile furnizorului respectiv.</p>
+
+<h3>13. Disponibilitate și limitarea răspunderii</h3>
+<p>Jocul este furnizat „așa cum este” și „în funcție de disponibilitate”. Operatorul depune eforturi rezonabile pentru funcționare și corectarea erorilor, dar nu garantează lipsa întreruperilor, compatibilitatea cu orice dispozitiv, păstrarea datelor locale sau disponibilitatea serviciilor terțe. În măsura permisă de lege, operatorul nu răspunde pentru pierderi indirecte, indisponibilitatea furnizorilor terți, pierderea datelor locale cauzată de browser/dispozitiv sau utilizarea necorespunzătoare a jocului. Nimic din aceste condiții nu exclude sau limitează drepturile consumatorilor ori răspunderea care nu poate fi exclusă potrivit normelor legale obligatorii.</p>
+
+<h3>14. Contribuții</h3>
+<p>Dacă funcția PayPal este activată, contribuțiile sunt voluntare, nu sunt obligatorii pentru utilizarea jocului și nu acordă avantaje competitive sau bunuri digitale. Plata este procesată de PayPal sau de furnizorii de plată relevanți, potrivit condițiilor lor.</p>
+
+<h3>15. Modificări și lege aplicabilă</h3>
+<p>Operatorul poate actualiza jocul și aceste condiții pentru a reflecta schimbări tehnice, juridice sau ale furnizorilor. Se aplică legea română, fără a aduce atingere normelor imperative de protecție a consumatorilor și drepturilor obligatorii ale utilizatorilor din jurisdicția lor.</p>
+<p class="small">Ultima actualizare: 5 noiembrie 2026. Pentru întrebări sau solicitări privind datele, folosește datele de contact ale operatorului indicate în partea de sus a documentului; acestea trebuie completate înainte de publicarea finală.</p>
+</section>
+
+<section id="en" class="panel">
+<h2>PART III — English summary</h2>
+<p><strong>No developer-operated gameplay logging server:</strong> Solitaire Delight does not send card moves, score or play time to a dedicated server operated by the developer. Selected preferences and progress indicators are stored locally in the browser/device (for example language, theme, chosen level, optional nickname, local wins and records). Clearing site data may erase this local information.</p>
+<p><strong>Third-party services:</strong> online news may use Google News RSS and BBC/Yahoo feeds through rss2json.com; radio discovery may use Radio Browser; streams connect to the selected station; YouTube playback uses YouTube services; fonts and libraries may load from external CDNs. Those providers may process IP address, browser/device details, request metadata, cookies or identifiers under their own policies.</p>
+<p><strong>Ads:</strong> AdSense is a possible web integration only after configuration and appropriate consent management. AdMob is relevant only to a native mobile build that actually integrates its SDK; a mobile browser/PWA does not automatically use AdMob. In this V18 HTML file, AdSense IDs are blank, ad loading is not activated and no native AdMob SDK is integrated.</p>
+<p><strong>PayPal:</strong> the PayPal link is not configured in this build. If enabled, payment takes place on PayPal; the game does not receive payment credentials.</p>
+<p><strong>Terms:</strong> the game is for entertainment; scores and unlocks have no monetary value. Third-party services are independent and may change or become unavailable. The game is provided as available, subject to mandatory consumer rights and liability that cannot legally be excluded.</p>
+<p class="small">This English section is a summary. The Romanian section above is the fuller text. The operator identity and public contact email must be completed before final publication.</p>
+</section>
+</main>
+</body></html>
